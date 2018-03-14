@@ -5,30 +5,31 @@ import { Route, Redirect } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from './store';
 
+import AuthPage from '../src/containers/Auth/Auth';
+import LandingPage from '../src/containers/landing/landing';
+import BookmarkPage from '../src/containers/Bookmark/Bookmarks';
+import MoviePage from '../src/containers/Movie/movie';
+
 
 const initialState = {};
 const store = configureStore(initialState);
 
-const PrivateRoute = ({ component: Component, isAuthorised, ...rest }) => (
+const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
-      {...rest} render={(props) => (isAuthorised? <Component {...props} /> : <Redirect to="/" />)}
+      {...rest} render={(props) => (!!window.localStorage.getItem("token")? <Component {...props} /> : <Redirect to="/" />)}
     />
   );
 
-const Home = () => <div>Hoommmmee</div>
-const UserLogout = () => <div> Logout </div>
-const UserRegister = () => <div> Register</div>
-const LandingPage = () => <div> Landing </div>
 
 
 const AppRoute = () => (
   <Provider store={store}>
     <Router>
       <div>
-        <Route path="/" component={!window.localStorage.getItem("token") ? Home : LandingPage} exact/>
-        <Route path="/logout" component={UserLogout} />
-        <Route path="/register" component={UserRegister} />
-        <PrivateRoute path="/comics" component={LandingPage} isAuthorised={window.localStorage.getItem("token")} />
+        <Route path="/"  render={(props) => (!window.localStorage.getItem("token") ?  <AuthPage {...props}/> : <Redirect to="/comics"/>)} exact/>
+        <PrivateRoute path="/comics" component={LandingPage} />
+        <PrivateRoute path="/bookmarks" component={BookmarkPage} />
+        <PrivateRoute path="/movie/:id" component={MoviePage} />
       </div>
     </Router>
   </Provider>

@@ -1,7 +1,6 @@
 import axios from 'axios'
-import config from '../config'
 
-axios.defaults.baseURL = `${config.API_URL}/`
+const baseURL =  'http://localhost:4000/api';
 
 export default class Api {
 
@@ -24,24 +23,24 @@ export default class Api {
   static get(url, params, conf) {
     const headers = this.config()
     const config = { ...headers, params, ...conf }
-    return axios.get(url, config)
+    return axios.get(`${baseURL}${url}`, config)
   }
 
   static post(url, data, conf) {
     const headers = this.config()
     const config = { ...headers, ...conf }
-    return axios.post(url, data, config)
+    return axios.post(`${baseURL}${url}`, data, config)
   }
 
   static put(url, data, conf) {
     const headers = this.config()
     const config = { ...headers, ...conf }
-    return axios.put(url, data, config)
+    return axios.put(`${baseURL}${url}`, data, config)
   }
 
   static delete(url, conf) {
     const headers = this.config()
     const config = { ...headers, ...conf }
-    return axios.delete(url, config)
+    return axios.delete(`${baseURL}${url}`, config)
   }
 }
