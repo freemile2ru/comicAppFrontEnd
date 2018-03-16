@@ -15,11 +15,11 @@ export default function marvelReducer(state=initialState, action) {
   switch (action.type) {
     case actionTypes.FETCH_COMICS_SUCCESS :
       return Object.assign({}, state, {
-         data : action.payload
+         comics : action.payload
       });
     case actionTypes.COMICS_ERROR :
       return Object.assign({}, state, {
-         data : action.payload
+         error : action.payload
       });
     default:
       return state;
